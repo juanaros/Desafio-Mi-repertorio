@@ -27,3 +27,22 @@ app.post("/canciones", (req, res) => {
     res.send("Cancion agregada exitosamente");
 });
 
+app.delete('/canciones/:id', (req, res) => {
+    const { id } = req.params
+    const canciones = JSON.parse(fs.readFileSync('repertorio.json'))
+    const index = canciones.findIndex(c => c.id == id)
+    canciones.splice(index, 1)
+    fs.writeFileSync('repertorio.json', JSON.stringify(canciones, null, 4))
+    res.send('Cancion borrada correctamente')
+});
+
+app.put('/canciones/:id', (req, res) => {
+    const { id } = req.params
+    const cancion = req.body
+    const canciones = JSON.parse(fs.readFileSync('repertorio.json'))
+    const index = canciones.findIndex(c => c.id == id)
+    canciones[index] = cancion
+    fs.writeFileSync('repertorio.json', JSON.stringify(canciones, null, 4))
+    res.send('Cancion modificada con exito')
+    });
+
